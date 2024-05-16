@@ -22,13 +22,6 @@ class UserController extends Controller {
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create() {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreUserRequest $request): JsonResponse {
@@ -62,16 +55,8 @@ class UserController extends Controller {
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, string $id) {
+    public function update(UpdateUserRequest $request, User $user) {
         $input = $request->validated();
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found',
-                'data' => null
-            ]);
-        }
         $user->update($input);
         return response()->json([
             'success' => true,
@@ -84,20 +69,12 @@ class UserController extends Controller {
      * Remove the specified resource from storage.
      */
 
-    public function destroy(string $id): JsonResponse {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found',
-                'data' => null
-            ]);
-        }
+    public function destroy(User $user): JsonResponse {
         $user->delete();
         return response()->json([
             'success' => true,
             'message' => 'User deleted successfully',
-            'data' => $user
+            'data' => []
         ]);
     }
 }
